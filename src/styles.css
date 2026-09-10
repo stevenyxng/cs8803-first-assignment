@@ -1,0 +1,338 @@
+/* Single committed dark theme: true black, white text, minimal chrome.
+   Mobile-first — base styles target a narrow screen, and the one breakpoint
+   at 600px widens things out. No transitions or animation by design. */
+
+:root {
+  --bg: #000000;
+  --fg: #ffffff;
+  --muted: #8e8e93;
+  --border: #1c1c1e;
+  --border-strong: #3a3a3c;
+  --danger: #ff453a;
+
+  /* Dark form controls, scrollbars and caret without any extra styling. */
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  /* 16px base keeps iOS from zooming when a control takes focus. */
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app,
+.signin {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.center {
+  display: grid;
+  place-items: center;
+  min-height: 60vh;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.error {
+  color: var(--danger);
+  font-size: 14px;
+}
+
+/* ---------- controls ---------- */
+
+button,
+.linkbutton {
+  font: inherit;
+  font-size: 15px;
+  /* 44px min height — a reliable touch target. */
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button.primary {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+  font-weight: 500;
+}
+
+button.danger {
+  color: var(--danger);
+  border-color: var(--border-strong);
+}
+
+button:focus-visible,
+.linkbutton:focus-visible,
+.dropzone:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+
+/* ---------- sign in ---------- */
+
+.signin {
+  text-align: center;
+  padding-top: 20vh;
+}
+
+.signin h1 {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+}
+
+.signin p {
+  color: var(--muted);
+  margin: 0 0 28px;
+}
+
+.signin button {
+  width: 100%;
+  max-width: 320px;
+}
+
+/* ---------- header ---------- */
+
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.who span {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* ---------- uploader ---------- */
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 32px 16px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+
+.dropzone strong {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.dropzone span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.dropzone.dragging {
+  border-color: var(--fg);
+  border-style: solid;
+}
+
+.uploads {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+
+.uploads li + li {
+  margin-top: 16px;
+}
+
+.uploads li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.uploads-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.uploads-name {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+
+.uploads-pct {
+  color: var(--muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.uploads progress {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  border: none;
+  display: block;
+}
+
+.uploads progress::-webkit-progress-bar {
+  background: var(--border);
+}
+
+.uploads progress::-webkit-progress-value {
+  background: var(--fg);
+}
+
+.uploads progress::-moz-progress-bar {
+  background: var(--fg);
+}
+
+/* ---------- file list ---------- */
+
+.files {
+  list-style: none;
+  padding: 0;
+  margin: 32px 0 0;
+}
+
+.files li {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  min-width: 0;
+}
+
+.files li:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.file-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.file-name {
+  display: block;
+  font-size: 15px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-meta {
+  color: var(--muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.file-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.file-actions button,
+.file-actions .linkbutton {
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 15px;
+  margin: 32px 0 0;
+}
+
+/* ---------- 600px and up ---------- */
+
+@media (min-width: 600px) {
+  .app,
+  .signin {
+    padding: 40px 24px 80px;
+  }
+
+  header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .who {
+    justify-content: flex-end;
+  }
+
+  .dropzone {
+    padding: 44px 16px;
+  }
+
+  .files li {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+}

@@ -1,0 +1,23 @@
+rules_version = '2';
+
+// Access control for the whole app. There is no trusted server in front of
+// Storage, so these rules ARE the authorization layer.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Every object lives under users/{uid}/. Because the rule compares the
+    // {userId} path segment to the caller's own uid, one signed-in user cannot
+    // read or delete another user's files even by guessing the exact path.
+    match /users/{userId}/{fileName} {
+      allow read, delete: if request.auth != null
+                          && request.auth.uid == userId;
+
+      // Size cap keeps an accidental huge upload from running up the bill.
+      allow write: if request.auth != null
+                   && request.auth.uid == userId
+                   && request.resource.size < 25 * 1024 * 1024;
+    }
+
+    // Anything outside users/{uid}/ is denied by default (no matching rule).
+  }
+}
