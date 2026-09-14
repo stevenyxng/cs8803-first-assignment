@@ -247,6 +247,44 @@ header h1 {
 
 /* ---------- file list ---------- */
 
+.file-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 32px 0 0;
+}
+
+.file-search input {
+  flex: 1;
+  min-width: 0;
+  /* 16px keeps iOS from zooming on focus; 44px matches the button targets. */
+  font: inherit;
+  font-size: 16px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--fg);
+}
+
+.file-search input:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+
+.file-count {
+  color: var(--muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.file-search + .files,
+.file-search + .empty {
+  margin-top: 16px;
+}
+
 .files {
   list-style: none;
   padding: 0;
