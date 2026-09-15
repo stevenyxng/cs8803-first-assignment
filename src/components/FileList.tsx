@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { StoredFile } from '../types'
 
 interface Props {
@@ -30,36 +31,61 @@ function formatDate(iso: string): string {
 }
 
 export function FileList({ files, loading, onDelete }: Props) {
+  const [query, setQuery] = useState('')
+
   if (loading && files.length === 0) return <p className="empty">Loading…</p>
   if (files.length === 0) return <p className="empty">No files yet.</p>
 
+  // Case-insensitive substring match on the name the user sees, not the path.
+  const needle = query.trim().toLowerCase()
+  const shown = needle ? files.filter((f) => f.name.toLowerCase().includes(needle)) : files
+
   return (
-    <ul className="files">
-      {files.map((f) => (
-        <li key={f.fullPath}>
-          <div className="file-main">
-            <span className="file-name">{f.name}</span>
-            <span className="file-meta">
-              {formatSize(f.size)} · {formatDate(f.createdAt)}
-            </span>
-          </div>
-          <div className="file-actions">
-            <a className="linkbutton" href={f.url} download={f.name} target="_blank" rel="noreferrer">
-              Download
-            </a>
-            <button
-              className="danger"
-              onClick={() => {
-                if (confirm(`Delete "${f.name}"? This cannot be undone.`)) {
-                  onDelete(f.fullPath)
-                }
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
+    <>
+      <div className="file-search">
+        <input
+          type="search"
+          placeholder="Search files"
+          aria-label="Search files by name"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <span className="file-count">
+          {needle ? `${shown.length} of ${files.length}` : `${files.length}`}{' '}
+          {files.length === 1 ? 'file' : 'files'}
+        </span>
+      </div>
+      {shown.length === 0 ? (
+        <p className="empty">No files match “{query.trim()}”.</p>
+      ) : (
+        <ul className="files">
+          {shown.map((f) => (
+            <li key={f.fullPath}>
+              <div className="file-main">
+                <span className="file-name">{f.name}</span>
+                <span className="file-meta">
+                  {formatSize(f.size)} · {formatDate(f.createdAt)}
+                </span>
+              </div>
+              <div className="file-actions">
+                <a className="linkbutton" href={f.url} download={f.name} target="_blank" rel="noreferrer">
+                  Download
+                </a>
+                <button
+                  className="danger"
+                  onClick={() => {
+                    if (confirm(`Delete "${f.name}"? This cannot be undone.`)) {
+                      onDelete(f.fullPath)
+                    }
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   )
 }
